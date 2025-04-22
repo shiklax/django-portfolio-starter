@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %} {# Pamiętaj o załadowaniu static, jeśli używasz go w blokach #}
+
+{% block content %}
+    {# Placeholder dla GIFa #}
+    {# Użyjemy prostego prostokąta jako placeholder #}
+    <div class="w-64 h-48 sm:w-80 sm:h-60 md:w-96 md:h-72 bg-gray-700 flex items-center justify-center mb-4">
+        <span class="text-gray-500 text-sm">GIF Placeholder</span>
+        {# Później możesz zamienić ten div na tag <img>: #}
+        {# <img src="{% static 'portfolio/images/twoj-gif.gif' %}" alt="Opis Twojego GIFa" class="w-auto h-auto max-w-full max-h-full"> #}
+    </div>
+
+    {# Placeholder dla opisu #}
+    <p class="text-gray-500 text-sm max-w-md">
+        Mój opis
+    </p>
+{% endblock %}

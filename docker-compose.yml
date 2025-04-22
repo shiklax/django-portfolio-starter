@@ -1,0 +1,30 @@
+# version: '3.8' # Możesz usunąć tę linię, jak sugeruje ostrzeżenie
+
+services:
+  web:
+    build: .
+    container_name: django_portfolio_web
+    # Mapowanie wolumenu dla developmentu (opcjonalne, ale przydatne)
+    # Pozwala edytować kod Python/HTML i widzieć zmiany bez przebudowywania
+    # Zmiany w tailwind.css nadal będą wymagały przebudowania LUB uruchomienia watchera
+    volumes:
+      - ./django_app:/app/django_app
+      # Jeśli chcesz, aby wygenerowany output.css był widoczny na hoście:
+      - ./django_app/portfolio/static/css:/app/django_app/portfolio/static/css
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      # Dodaj inne zmienne środowiskowe, jeśli są potrzebne
+
+#  cloudflared:
+#    image: cloudflare/cloudflared:latest
+#    container_name: django_portfolio_cloudflared
+#    restart: unless-stopped
+#    # ... reszta konfiguracji cloudflared ...
+#    depends_on:
+#      - web
+
+# volumes: # Jeśli używasz nazwanych wolumenów
+#   static_volume:
