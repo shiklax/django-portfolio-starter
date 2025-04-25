@@ -1,17 +1,29 @@
+{# templates/twoja_aplikacja/home.html #}
 {% extends 'base.html' %}
-{% load static %} {# Pamiętaj o załadowaniu static, jeśli używasz go w blokach #}
+{% load static %}
 
 {% block content %}
-    {# Placeholder dla GIFa #}
-    {# Użyjemy prostego prostokąta jako placeholder #}
-    <div class="w-64 h-48 sm:w-80 sm:h-60 md:w-96 md:h-72 bg-gray-700 flex items-center justify-center mb-4">
-        <span class="text-gray-500 text-sm">GIF Placeholder</span>
-        {# Później możesz zamienić ten div na tag <img>: #}
-        {# <img src="{% static 'portfolio/images/twoj-gif.gif' %}" alt="Opis Twojego GIFa" class="w-auto h-auto max-w-full max-h-full"> #}
+<div class="flex flex-col items-center justify-center pt-10 sm:pt-16"> {# Kontener centrujący zawartość #}
+
+    {# Kontener definiujący rozmiar i pozycję obszaru loga #}
+    {# Dostosuj w-*, h-*, max-w-* aby pasowało do Twoich potrzeb #}
+    <div id="logo-container" class="w-full max-w-3xl h-96 sm:h-[28rem] md:h-[32rem] mb-6 relative">
+        {# Canvas będzie wypełniał ten kontener #}
+        <canvas id="interactive-logo-canvas" class="w-full h-full block touch-none bg-transparent"></canvas>
     </div>
 
-    {# Placeholder dla opisu #}
-    <p class="text-gray-500 text-sm max-w-md">
-        Mój opis
+    {# Opis pod logiem #}
+    <p class="text-gray-400 text-center text-sm sm:text-base max-w-md px-4">
+       To jest mój opis, który znajduje się pod interaktywnym logo.
     </p>
+
+</div>
+
+{# Ładowanie skryptu JS - musi być PO elemencie canvas #}
+<script src="{% static 'js/interactive-logo.js' %}"></script>
+{% endblock %}
+
+{% block extra_js %}
+{# Alternatywnie, załaduj tutaj, jeśli zdefiniowałeś ten blok w base.html #}
+{# <script src="{% static 'js/interactive-logo.js' %}"></script> #}
 {% endblock %}
