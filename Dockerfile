@@ -27,7 +27,7 @@ RUN npm install
 COPY . .
 
 # Budowanie CSS za pomocą skryptu z package.json
-# RUN npm run build:css
+# RUN npm run build:css --verbose
 
 # Uruchomienie aplikacji Django
 # Upewnij się, że ścieżka do manage.py jest poprawna

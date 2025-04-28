@@ -8,9 +8,20 @@ def home_view(request):
     context = {}
     return render(request, 'portfolio/home.html', context)
 
-# Dodaj inne widoki dla 'portfolio' i 'about', gdy będziesz gotowy
-# def portfolio_view(request):
-#     return render(request, 'portfolio/portfolio.html', {})
+# NOWY widok dla strony listy portfolio
+def portfolio_list_view(request):
+    """
+    Widok renderujący stronę z listą projektów portfolio.
+    """
+    context = {} # W przyszłości możesz tu przekazać listę projektów
+    # Wskazujemy na nowy plik szablonu, który zaraz stworzymy
+    return render(request, 'portfolio/portfolio_list.html', context)
 
-# def about_view(request):
-#     return render(request, 'portfolio/about.html', {})
+# NOWY widok dla strony "O mnie"
+def about_page_view(request):
+    """
+    Widok renderujący stronę "O mnie".
+    """
+    context = {} # W przyszłości możesz tu przekazać dane o sobie
+    # Wskazujemy na nowy plik szablonu, który zaraz stworzymy
+    return render(request, 'portfolio/about_page.html', context)
