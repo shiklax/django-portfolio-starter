@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Ustawienia Wyglądu i Interakcji ---
     const PARTICLE_BASE_COLOR = 'rgba(255, 255, 255, 0.7)'; // Kolor cząstek w spoczynku (był biały z alfą)
     const PARTICLE_SCATTER_COLOR = 'rgba(203, 166, 246, 0.9)'; // Kolor podczas interakcji (był fioletowy z alfą)
-    const PARTICLE_DENSITY = 4;      // Zwiększona gęstość cząstek
-    const INTERACTION_RADIUS = 100;    // Zasięg interakcji myszy
-    const MOUSE_FORCE = 50;            // Siła odpychania
+    const PARTICLE_DENSITY = 3;      // Zwiększona gęstość cząstek
+    const INTERACTION_RADIUS = 50;    // Zasięg interakcji myszy
+    const MOUSE_FORCE = 30;            // Siła odpychania
     const LOGO_PADDING = 0.95;         // Zwiększony padding (logo bliżej krawędzi)
     const PARTICLE_MIN_SIZE_FACTOR = 0.2;  // Min rozmiar cząstki przy interakcji
     const PARTICLE_REDUCTION_FACTOR = 0.9; // Zmniejszona redukcja rozmiaru (było 0.01, wróćmy do większej redukcji dla widocznego efektu)

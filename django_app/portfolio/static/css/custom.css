@@ -1,0 +1,13 @@
+/* static/css/custom.css */
+
+/* Klasa do ukrywania paska przewijania */
+.no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* Możesz tu dodać inne swoje niestandardowe style w przyszłości */

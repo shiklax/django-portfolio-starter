@@ -1,12 +1,121 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="text-3xl font-bold text-white mb-6">O Mnie</h1>
-    <p class="text-gray-400 max-w-xl mx-auto">
-        Witaj! Jestem Radosław Matusiak i pasjonuję się tworzeniem aplikacji webowych.
-        Tutaj możesz napisać coś więcej o sobie, swoich umiejętnościach i doświadczeniu.
-    </p>
-    {# Dodaj więcej informacji o sobie #}
+<div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold text-white text-center mb-12">Moja Droga Zawodowa</h1>
+
+    <!-- Kontener nadrzędny dla timeline'u i przycisków -->
+    <div class="relative">
+
+        <!-- Przyciski nawigacyjne (bez zmian) -->
+        <button id="scroll-left-btn" aria-label="Przewiń w lewo" class="absolute top-1/2 -translate-y-1/2 left-0 z-20 p-2 bg-gray-700/50 hover:bg-gray-600/80 text-white rounded-full transition duration-300 ease-in-out disabled:opacity-30 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="scroll-right-btn" aria-label="Przewiń w prawo" class="absolute top-1/2 -translate-y-1/2 right-0 z-20 p-2 bg-gray-700/50 hover:bg-gray-600/80 text-white rounded-full transition duration-300 ease-in-out disabled:opacity-30 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <!-- Kontener dla przewijanego poziomo timeline'u -->
+        <!-- ZMIANY: usunięto w-full, dodano mx-auto i stałe szerokości w-[...] sm:w-[...] -->
+        <div id="timeline-scroll-container"
+             class="relative mx-auto overflow-x-auto pb-10 scroll-smooth no-scrollbar w-[960px] sm:w-[1056px] snap-x snap-mandatory">
+            <!-- Wewnętrzny kontener flex - usunięto pl-* zostało tylko pr-* -->
+            <div class="inline-flex items-start space-x-12 pr-10 relative">
+
+                <!-- Linia osi czasu (bez zmian) -->
+                <div class="absolute top-10 left-0 h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-500 w-full z-0 rounded" style="min-width: 100%;"></div>
+
+                <!-- Element Timeline 1: Bar Manager -->
+                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start" >
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                        Sep 2019 - Aug 2021
+                    </div>
+                    <div class="flex items-center mb-3 pt-4">
+                        <span class="text-3xl mr-3">🍹</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Bar Manager & Mixologist</h3>
+                            <p class="text-sm text-gray-400">Exotic Cocktail Bar</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                        <li>Zarządzanie barem w ruchliwym lokalu.</li>
+                        <li>Tworzenie karty koktajli, szkolenie personelu.</li>
+                        <li>Obsługa klienta i organizacja eventów.</li>
+                        <li>Coś fajnego o faktach 🍸✨</li>
+                    </ul>
+                </div>
+
+                <!-- Element Timeline 2: Junior IT Executive -->
+                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-cyan-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                        Aug 2021 - Present
+                    </div>
+                   <div class="flex items-center mb-3 pt-4">
+                        <span class="text-3xl mr-3">🧑‍💻</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Junior IT Executive</h3>
+                            <p class="text-sm text-gray-400">Nazwa Firmy</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                        <li>Budowanie strony firmowej od podstaw.</li>
+                        <li>Współpraca z zespołami nad różnymi projektami.</li>
+                        <li>Pomoc w integracji systemów wewnętrznych.</li>
+                        <li>Wsparcie techniczne dla klientów.</li>
+                    </ul>
+                </div>
+
+                <!-- Element Timeline 3: Fullstack Web Dev Student -->
+                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-sky-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                        Jun 2022 - Dec 2022
+                    </div>
+                    <div class="flex items-center mb-3 pt-4">
+                        <span class="text-3xl mr-3">🎓</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Fullstack Web Dev Student</h3>
+                            <p class="text-sm text-gray-400">University of Birmingham (Bootcamp)</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                        <li>Intensywna nauka technologii webowych (MERN stack).</li>
+                        <li>Realizacja projektów indywidualnych i grupowych.</li>
+                        <li>Nauka dobrych praktyk programistycznych.</li>
+                        <li>Rozwinięcie pasji do tworzenia aplikacji.</li>
+                    </ul>
+                </div>
+
+                <!-- Element Timeline 4: Software Engineer -->
+                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
+                     <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                        Jun 2023 - Present
+                    </div>
+                    <div class="flex items-center mb-3 pt-4">
+                        <span class="text-3xl mr-3">🚀</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Software Engineer</h3>
+                            <p class="text-sm text-gray-400">Obecna Firma</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                        <li>Praca nad głównymi aplikacjami firmy.</li>
+                        <li>Rozwój i utrzymanie kodu (np. Python, JS).</li>
+                        <li>Współpraca w zespole 10+ osób.</li>
+                        <li>Praca w metodyce Agile (Scrum/Kanban).</li>
+                    </ul>
+                </div>
+
+                 <!-- Dodaj więcej elementów timeline'u kopiując i modyfikując powyższe bloki -->
+
+            </div>
+        </div>
+    </div>
+
 </div>
+<script src="{% static 'js/timeline_scroll.js' %}"></script>
 {% endblock %}

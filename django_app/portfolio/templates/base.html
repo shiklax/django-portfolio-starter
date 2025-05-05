@@ -7,6 +7,7 @@
     {# Link do skompilowanego pliku CSS Tailwind #}
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     {# Ewentualne dodatkowe style lub linki #}
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <style>
         /* Możesz dodać tutaj niestandardowe style, jeśli potrzebujesz */
         /* Na przykład, jeśli chcesz użyć konkretnej czcionki */
@@ -30,7 +31,7 @@
 
     {# ----- GŁÓWNA ZAWARTOŚĆ ----- #}
     {# flex-grow zapewnia, że main zajmie dostępną przestrzeń, pchając footer w dół #}
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
+    <main class="flex-grow flex items-center justify-center px-4">
         {% block content %}
         {# Tutaj będzie wstawiana zawartość z dziedziczących szablonów #}
         {% endblock %}
