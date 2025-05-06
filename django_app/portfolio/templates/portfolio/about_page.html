@@ -2,120 +2,104 @@
 {% load static %}
 
 {% block content %}
-<div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <h1 class="text-3xl font-bold text-white text-center mb-12">Moja Droga Zawodowa</h1>
+{# Główny kontener dla sekcji "About", który będzie maską dla przewijania #}
+{# Ustawiamy wysokość na pełną wysokość okna. Jeśli masz stały nagłówek/stopkę, odejmij ich wysokość. #}
+{# Przykład: h-screen lub h-[calc(100vh-WysokośćNagłówka)] #}
+<div id="about-sections-container"
+     class="relative w-full h-[calc(100vh-theme('spacing.16')-theme('spacing.10')-1rem)] overflow-hidden bg-black cursor-grab active:cursor-grabbing mx-auto ">
+    {# Kontener wewnętrzny, który będzie przeciągany i będzie zawierał wszystkie sekcje obok siebie #}
+    <div id="about-sections-swiper" class="flex h-full w-fit"> {# w-fit aby dopasował się do sumy szerokości dzieci #}
 
-    <!-- Kontener nadrzędny dla timeline'u i przycisków -->
-    <div class="relative">
-
-        <!-- Przyciski nawigacyjne (bez zmian) -->
-        <button id="scroll-left-btn" aria-label="Przewiń w lewo" class="absolute top-1/2 -translate-y-1/2 left-0 z-20 p-2 bg-gray-700/50 hover:bg-gray-600/80 text-white rounded-full transition duration-300 ease-in-out disabled:opacity-30 disabled:cursor-not-allowed">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-        <button id="scroll-right-btn" aria-label="Przewiń w prawo" class="absolute top-1/2 -translate-y-1/2 right-0 z-20 p-2 bg-gray-700/50 hover:bg-gray-600/80 text-white rounded-full transition duration-300 ease-in-out disabled:opacity-30 disabled:cursor-not-allowed">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
-
-        <!-- Kontener dla przewijanego poziomo timeline'u -->
-        <!-- ZMIANY: usunięto w-full, dodano mx-auto i stałe szerokości w-[...] sm:w-[...] -->
-        <div id="timeline-scroll-container"
-             class="relative mx-auto overflow-x-auto pb-10 scroll-smooth no-scrollbar w-[960px] sm:w-[1056px] snap-x snap-mandatory">
-            <!-- Wewnętrzny kontener flex - usunięto pl-* zostało tylko pr-* -->
-            <div class="inline-flex items-start space-x-12 pr-10 relative">
-
-                <!-- Linia osi czasu (bez zmian) -->
-                <div class="absolute top-10 left-0 h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-500 w-full z-0 rounded" style="min-width: 100%;"></div>
-
-                <!-- Element Timeline 1: Bar Manager -->
-                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start" >
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                        Sep 2019 - Aug 2021
-                    </div>
-                    <div class="flex items-center mb-3 pt-4">
-                        <span class="text-3xl mr-3">🍹</span>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">Bar Manager & Mixologist</h3>
-                            <p class="text-sm text-gray-400">Exotic Cocktail Bar</p>
-                        </div>
-                    </div>
-                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
-                        <li>Zarządzanie barem w ruchliwym lokalu.</li>
-                        <li>Tworzenie karty koktajli, szkolenie personelu.</li>
-                        <li>Obsługa klienta i organizacja eventów.</li>
-                        <li>Coś fajnego o faktach 🍸✨</li>
-                    </ul>
-                </div>
-
-                <!-- Element Timeline 2: Junior IT Executive -->
-                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-cyan-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                        Aug 2021 - Present
-                    </div>
-                   <div class="flex items-center mb-3 pt-4">
-                        <span class="text-3xl mr-3">🧑‍💻</span>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">Junior IT Executive</h3>
-                            <p class="text-sm text-gray-400">Nazwa Firmy</p>
-                        </div>
-                    </div>
-                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
-                        <li>Budowanie strony firmowej od podstaw.</li>
-                        <li>Współpraca z zespołami nad różnymi projektami.</li>
-                        <li>Pomoc w integracji systemów wewnętrznych.</li>
-                        <li>Wsparcie techniczne dla klientów.</li>
-                    </ul>
-                </div>
-
-                <!-- Element Timeline 3: Fullstack Web Dev Student -->
-                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-sky-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                        Jun 2022 - Dec 2022
-                    </div>
-                    <div class="flex items-center mb-3 pt-4">
-                        <span class="text-3xl mr-3">🎓</span>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">Fullstack Web Dev Student</h3>
-                            <p class="text-sm text-gray-400">University of Birmingham (Bootcamp)</p>
-                        </div>
-                    </div>
-                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
-                        <li>Intensywna nauka technologii webowych (MERN stack).</li>
-                        <li>Realizacja projektów indywidualnych i grupowych.</li>
-                        <li>Nauka dobrych praktyk programistycznych.</li>
-                        <li>Rozwinięcie pasji do tworzenia aplikacji.</li>
-                    </ul>
-                </div>
-
-                <!-- Element Timeline 4: Software Engineer -->
-                <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 snap-start">
-                     <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                        Jun 2023 - Present
-                    </div>
-                    <div class="flex items-center mb-3 pt-4">
-                        <span class="text-3xl mr-3">🚀</span>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">Software Engineer</h3>
-                            <p class="text-sm text-gray-400">Obecna Firma</p>
-                        </div>
-                    </div>
-                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
-                        <li>Praca nad głównymi aplikacjami firmy.</li>
-                        <li>Rozwój i utrzymanie kodu (np. Python, JS).</li>
-                        <li>Współpraca w zespole 10+ osób.</li>
-                        <li>Praca w metodyce Agile (Scrum/Kanban).</li>
-                    </ul>
-                </div>
-
-                 <!-- Dodaj więcej elementów timeline'u kopiując i modyfikując powyższe bloki -->
-
+        {# Sekcja 1: O Mnie (Tekst) #}
+                <section id="about-me" class="fullscreen-section-about flex-shrink-0 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-gray-900 overflow-y-auto">
+            <h2 class="text-4xl font-bold text-white mb-6">O Mnie</h2>
+            <div class="max-w-2xl">
+                <p class="text-gray-300 mb-4">
+                    Witaj! Jestem Radosław Matusiak i pasjonuję się tworzeniem aplikacji webowych.
+                    Moja przygoda z programowaniem zaczęła się od fascynacji możliwościami, jakie daje kod, i szybko przerodziła się w coś więcej niż hobby.
+                </p>
+                <p class="text-gray-300 mb-4">
+                    Specjalizuję się w technologiach backendowych z wykorzystaniem Django i Python, co pozwala mi budować solidne i skalowalne fundamenty aplikacji. Równie chętnie eksploruję świat frontendu, pracując z frameworkami takimi jak React czy Vue, aby tworzyć interaktywne i przyjazne dla użytkownika interfejsy. Dążę do pisania czystego, wydajnego kodu, który jest łatwy w utrzymaniu i rozwoju.
+                </p>
+                <p class="text-gray-300">
+                    Poza kodowaniem, pasjonuję się fotografią krajobrazową i podróżami, co pozwala mi naładować baterie i zachować świeże spojrzenie na rozwiązywane problemy techniczne.
+                </p>
             </div>
-        </div>
+        </section>
+
+        {# Sekcja 2: Doświadczenie (Timeline) #}
+        <section id="experience-timeline" class="fullscreen-section-about flex-shrink-0 w-full h-full flex flex-col items-center justify-center p-8 bg-gray-800 overflow-y-auto">
+            <h1 class="text-3xl font-bold text-white text-center mb-8 sm:mb-12">Moja Droga Zawodowa</h1>
+            {# Kontener dla wewnętrznego timeline'u - jego szerokość musi być zarządzana dla responsywności #}
+            <div id="timeline-scroll-container"
+                 class="relative mx-auto overflow-x-hidden pb-10 no-scrollbar w-full max-w-[320px] sm:max-w-[352px] md:max-w-[688px] lg:max-w-[1056px] cursor-grab active:cursor-grabbing">
+                 {# Używamy max-w-* zamiast w-[...] dla łatwiejszego zarządzania responsywnością kontenera timeline #}
+                 {# max-w-xs (20rem=320px dla 1 karty), sm:max-w-sm (24rem=384px), md:max-w-2xl (42rem=672px), lg:max-w-4xl (56rem=896px) lub 5xl (64rem=1024px) #}
+                 {# Przykładowe max-w dla 1, 2, 3 kart: #}
+                 {# 1 karta: ~20rem (w-80) + paddingi wewnętrzne -> max-w-xs lub sm #}
+                 {# 2 karty: 2*20rem + 3rem (space) + paddingi -> max-w-md lub lg #}
+                 {# 3 karty: 3*20rem + 2*3rem (space) + paddingi -> max-w-2xl lub 3xl lub 4xl #}
+                 {# Powyższe max-w to przykłady, dostosuj do swoich obliczeń #}
+
+
+                <div id="timeline-inner-content" class="inline-flex items-start md:space-x-12 relative">
+                    {# Usunięto pr-* bo max-w kontenera powinno to załatwić, jeśli karty są flex-shrink-0 #}
+                    {# Jeśli jest tylko jedna karta, może nie być space-x, dodaj margines do karty #}
+                    <div class="absolute top-10 left-0 h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-500 w-full z-0 rounded" style="min-width: 100%;"></div>
+
+                    <!-- Element Timeline 1 -->
+                    <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 mr-12 md:mr-0">
+                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">Sep 2019 - Aug 2021</div>
+                        <div class="flex items-center mb-3 pt-4"><span class="text-3xl mr-3">🍹</span><div><h3 class="font-bold text-lg text-white">Bar Manager & Mixologist</h3><p class="text-sm text-gray-400">Exotic Cocktail Bar</p></div></div>
+                        <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2"><li>Zarządzanie barem...</li><li>Tworzenie karty...</li><li>Obsługa klienta...</li><li>Coś fajnego...🍸✨</li></ul>
+                    </div>
+                    <!-- Element Timeline 2 -->
+                    <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 mr-12 md:mr-0">
+                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-cyan-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">Aug 2021 - Present</div>
+                        <div class="flex items-center mb-3 pt-4"><span class="text-3xl mr-3">🧑‍💻</span><div><h3 class="font-bold text-lg text-white">Junior IT Executive</h3><p class="text-sm text-gray-400">Nazwa Firmy</p></div></div>
+                        <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2"><li>Budowanie strony...</li><li>Współpraca z zespołami...</li><li>Pomoc w integracji...</li><li>Wsparcie techniczne...</li></ul>
+                    </div>
+                    <!-- Element Timeline 3 -->
+                    <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105 mr-12 md:mr-0">
+                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-sky-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">Jun 2022 - Dec 2022</div>
+                        <div class="flex items-center mb-3 pt-4"><span class="text-3xl mr-3">🎓</span><div><h3 class="font-bold text-lg text-white">Fullstack Web Dev Student</h3><p class="text-sm text-gray-400">University (Bootcamp)</p></div></div>
+                        <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2"><li>Intensywna nauka...</li><li>Realizacja projektów...</li><li>Nauka dobrych praktyk...</li><li>Rozwinięcie pasji...</li></ul>
+                    </div>
+                    <!-- Element Timeline 4 -->
+                    <div class="timeline-card relative z-10 flex-shrink-0 w-72 sm:w-80 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 transition-transform duration-300 hover:scale-105">
+                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">Jun 2023 - Present</div>
+                        <div class="flex items-center mb-3 pt-4"><span class="text-3xl mr-3">🚀</span><div><h3 class="font-bold text-lg text-white">Software Engineer</h3><p class="text-sm text-gray-400">Obecna Firma</p></div></div>
+                        <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2"><li>Praca nad głównymi...</li><li>Rozwój i utrzymanie...</li><li>Współpraca w zespole...</li><li>Praca w metodyce Agile...</li></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Sekcja 3: Kontakt #}
+        <section id="contact-info" class="fullscreen-section-about flex-shrink-0 w-full h-full flex flex-col items-center justify-center p-0 text-center bg-gray-900 overflow-y-auto">
+            <h2 class="text-4xl font-bold text-white mb-6">Kontakt</h2>
+            <div class="max-w-md">
+                <p class="text-gray-300 mb-4">
+                    Chętnie odpowiem na Twoje pytania lub porozmawiam o potencjalnej współpracy.
+                </p>
+                <p class="text-gray-300 mb-2">
+                    Email: <a href="mailto:twoj.email@example.com" class="text-emerald-400 hover:text-emerald-300">twoj.email@example.com</a>
+                </p>
+                <p class="text-gray-300">
+                    LinkedIn: <a href="https://www.linkedin.com/in/twojprofil/" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300">Mój Profil LinkedIn</a>
+                </p>
+            </div>
+        </section>
     </div>
 
+    <nav id="about-section-navigation" class="fixed right-5 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-3">
+        {# Kropki generowane przez JS #}
+    </nav>
 </div>
+
+{# Główny skrypt do obsługi przeciągania sekcji na stronie "About" #}
+<script src="{% static 'js/about_page_swiper.js' %}"></script>
+
+{# Skrypt dla wewnętrznego timeline'u (musi być załadowany PO HTML timeline'u) #}
 <script src="{% static 'js/timeline_scroll.js' %}"></script>
 {% endblock %}

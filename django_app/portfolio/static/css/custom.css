@@ -11,3 +11,24 @@
 }
 
 /* Możesz tu dodać inne swoje niestandardowe style w przyszłości */
+
+/* Poprawki renderowania dla swipera sekcji "About" */
+
+/* 1. Stwórz nowy stacking context i pomóż w 'clipping' */
+#about-sections-container {
+    isolation: isolate;
+}
+
+/* 2. Poinformuj przeglądarkę o nadchodzącej transformacji */
+#about-sections-swiper {
+    will-change: transform;
+}
+
+/* 3. Opcjonalnie: "GPU Layer Hack" dla poszczególnych sekcji */
+/* Odkomentuj, jeśli punkty 1 i 2 nie wystarczą */
+/*
+.fullscreen-section-about {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+*/

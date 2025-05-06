@@ -1,114 +1,118 @@
+// static/js/timeline_scroll.js
 document.addEventListener('DOMContentLoaded', function() {
-    const scrollContainer = document.getElementById('timeline-scroll-container');
-    const scrollLeftButton = document.getElementById('scroll-left-btn');
-    const scrollRightButton = document.getElementById('scroll-right-btn');
-    const cards = Array.from(scrollContainer.querySelectorAll('.timeline-card')); // Pobierz karty jako tablicę
-    const itemsPerPage = 3; // Ile elementów na "stronę"
-
-    if (!scrollContainer || !scrollLeftButton || !scrollRightButton || cards.length === 0) {
-        console.error("Timeline elements missing or not found.");
+    // Upewnij się, że GSAP i Draggable są załadowane
+    if (typeof gsap === 'undefined' || typeof Draggable === 'undefined') {
+        console.error('GSAP or Draggable is not loaded for timeline_scroll.js!');
         return;
     }
+    // Zarejestruj Draggable (dobra praktyka)
+    gsap.registerPlugin(Draggable);
 
-    // Funkcja Debounce (bez zmian)
+    const scrollContainer = document.getElementById('timeline-scroll-container'); // Zewnętrzny kontener (maska)
+    const innerContent = document.getElementById('timeline-inner-content');   // Wewnętrzny kontener, który będziemy przeciągać
+
+    // Sprawdź, czy elementy istnieją, zanim spróbujemy z nimi pracować
+    if (!scrollContainer || !innerContent) {
+        // console.log("Timeline container or inner content not found on this page."); // Zmień na log, jeśli to spodziewane na innych stronach
+        return; // Po prostu zakończ, jeśli nie ma tych elementów na danej stronie
+    }
+
+    const cards = Array.from(innerContent.querySelectorAll('.timeline-card')); // Pobierz karty dla potencjalnego użycia w snap
+
+    // Jeśli nie ma kart, nie inicjuj draggable
+    if (cards.length === 0) {
+         console.log("No timeline cards found inside inner content.");
+         return;
+    }
+
+    let draggableTimeline; // Zmienna do przechowywania instancji Draggable
+
+    // --- Funkcja Debounce ---
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
+            const later = () => { clearTimeout(timeout); func(...args); };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
     }
 
-    // Funkcja aktualizująca stan przycisków - z poprawionym maxScroll
-    const updateButtonStates = () => {
-        if (!scrollContainer) return;
-        const tolerance = 5; // Tolerancja dla porównań
-        const currentScroll = Math.round(scrollContainer.scrollLeft); // Zaokrąglijmy dla pewności
+    function createTimelineDraggable() {
+        // Oblicz granice przeciągania
+        const containerWidth = scrollContainer.offsetWidth;
+        const contentWidth = innerContent.scrollWidth;
+        let minX = 0;
+        // Tylko jeśli treść jest szersza niż kontener, pozwól na przeciąganie w lewo
+        if (contentWidth > containerWidth) {
+            minX = containerWidth - contentWidth;
+        }
+        const maxX = 0; // Zawsze 0 jako maksymalna pozycja (początek)
 
-        // Oblicz pozycję, do której można maksymalnie przewinąć w prawo
-        // To jest pozycja startowa pierwszego elementu na ostatniej stronie
-        const lastPossibleFirstItemIndex = Math.max(0, cards.length - itemsPerPage);
-        const maxScrollTarget = cards[lastPossibleFirstItemIndex]?.offsetLeft ?? 0; // Użyj offsetLeft lub 0 jeśli nie ma karty
+        // console.log(`Timeline Draggable bounds: minX=${minX}, maxX=${maxX}`);
 
-        scrollLeftButton.disabled = currentScroll <= tolerance; // Wyłączony na początku
-        scrollRightButton.disabled = currentScroll >= maxScrollTarget - tolerance; // Wyłączony, gdy jesteśmy na ostatniej stronie
-    };
+        // Zniszcz starą instancję przed utworzeniem nowej (ważne przy resize)
+        if (draggableTimeline && draggableTimeline.length > 0) {
+            // console.log("Killing existing Timeline Draggable instance");
+            draggableTimeline[0].kill();
+            draggableTimeline = null;
+        }
 
-    // Funkcja znajdująca indeks pierwszej WIDOCZNEJ karty (lub najbliższej lewej krawędzi)
-    function findFirstVisibleCardIndex() {
-        const currentScroll = scrollContainer.scrollLeft;
-        let closestIndex = 0;
-        let minDistance = Infinity;
+        // console.log("Creating new Timeline Draggable instance");
+        draggableTimeline = Draggable.create(innerContent, {
+            type: "x",
+            edgeResistance: 0.65,
+            bounds: { minX: minX, maxX: maxX },
+            inertia: true,
+            dragClickables: true,
+            lockAxis: true,
 
-        cards.forEach((card, index) => {
-            const cardStart = card.offsetLeft;
-            // Znajdź kartę, której początek jest najbliższy obecnej pozycji scrolla
-            const distance = Math.abs(cardStart - currentScroll);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestIndex = index;
+            // --- ZATRZYMANIE PROPAGACJI ---
+            onPress: function(e) {
+                // Zatrzymaj zdarzenie, aby nie uruchomiło przeciągania rodzica (sekcji)
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                } else { // Fallback dla IE
+                    e.cancelBubble = true;
+                }
+                // console.log("Timeline onPress - propagation stopped.");
+            },
+            // --- KONIEC ZMIANY ---
+
+            // Opcjonalnie snap dla kart timeline'u
+            // snap: {
+            //     x: function(endValue) {
+            //         let cardWidth = cards.length > 0 ? cards[0].offsetWidth + 48 : containerWidth; // 48px to space-x-12 / 2 ? Musi być dokładne
+            //         let snappedX = Math.round(endValue / cardWidth) * cardWidth;
+            //         snappedX = Math.max(minX, Math.min(maxX, snappedX));
+            //         return snappedX;
+            //     }
+            // },
+            onDragStart: function() {
+                // Możesz dodać klasy, np. gdy przeciąganie się zaczyna
+                // scrollContainer.classList.add('is-dragging-timeline');
+            },
+            onDragEnd: function() {
+                // scrollContainer.classList.remove('is-dragging-timeline');
+                // console.log("Timeline Drag End, final X:", this.x.toFixed(2));
             }
         });
-        // Zwraca indeks karty, która jest aktualnie wyrównana (lub prawie wyrównana) do lewej krawędzi
-        return closestIndex;
+
+         // Upewnij się, że pozycja jest poprawna po utworzeniu
+         if (draggableTimeline && draggableTimeline.length > 0) {
+            gsap.set(innerContent, {x: 0}); // Zawsze resetuj do 0 przy tworzeniu/resize
+            draggableTimeline[0].update(true); // Zastosuj granice od razu
+         }
     }
 
-    // Przewijanie do określonego indeksu karty
-    function scrollToCard(index) {
-        // Upewnij się, że indeks jest w granicach
-        const targetIndex = Math.max(0, Math.min(index, cards.length - 1));
+    // Inicjalizacja Draggable dla timeline'u
+    createTimelineDraggable();
 
-        if (cards[targetIndex]) {
-            const targetScrollLeft = cards[targetIndex].offsetLeft;
-            scrollContainer.scrollTo({
-                left: targetScrollLeft,
-                behavior: 'smooth'
-            });
-            // Aktualizuj przyciski po animacji (czas może wymagać dostosowania)
-            setTimeout(updateButtonStates, 400);
-        }
-    }
+    // Ponownie utwórz Draggable przy zmianie rozmiaru okna
+    window.addEventListener("resize", debounce(createTimelineDraggable, 250));
 
-    // Obsługa kliknięcia "Prawo"
-    scrollRightButton.addEventListener('click', () => {
-        const currentIndex = findFirstVisibleCardIndex();
-        // Przesuń o 'itemsPerPage', ale nie dalej niż do początku ostatniej strony
-        const lastPossibleFirstItemIndex = Math.max(0, cards.length - itemsPerPage);
-        const targetIndex = Math.min(lastPossibleFirstItemIndex, currentIndex + itemsPerPage);
+    // Ustawienie początkowe - już jest w createTimelineDraggable przez gsap.set(innerContent, {x: 0});
+    // setTimeout(() => {
+    //     // gsap.set(innerContent, {x: 0}); // Jest już w createTimelineDraggable
+    // }, 50);
 
-        // Przewiń tylko jeśli cel jest inny niż obecny
-        if (targetIndex > currentIndex) {
-            scrollToCard(targetIndex);
-        } else {
-             // Jeśli już jesteśmy na ostatniej stronie, upewnijmy się, że jest dobrze wyrównana
-             scrollToCard(targetIndex);
-        }
-    });
-
-    // Obsługa kliknięcia "Lewo"
-    scrollLeftButton.addEventListener('click', () => {
-        const currentIndex = findFirstVisibleCardIndex();
-        // Przesuń o 'itemsPerPage' w lewo, ale nie poniżej 0
-        const targetIndex = Math.max(0, currentIndex - itemsPerPage);
-
-        // Przewiń tylko jeśli cel jest inny niż obecny
-        if (targetIndex < currentIndex) {
-            scrollToCard(targetIndex);
-        } else {
-             // Jeśli już jesteśmy na pierwszej stronie, upewnijmy się, że jest dobrze wyrównana
-             scrollToCard(0);
-        }
-    });
-
-    // --- Nasłuchiwanie na zdarzenie scroll i resize (bez zmian, używa debounce) ---
-    scrollContainer.addEventListener('scroll', debounce(updateButtonStates, 150));
-    window.addEventListener('resize', debounce(updateButtonStates, 150));
-
-    // --- Ustawienie początkowego stanu przycisków (bez zmian) ---
-    setTimeout(updateButtonStates, 150); // Uruchom raz po załadowaniu
-
-});	
+});
